@@ -1,0 +1,36 @@
+{
+  "name": "pet-care-system",
+  "version": "1.0.0",
+  "description": "Pet Doc - Comprehensive Pet Care Management System (Monorepo)",
+  "private": true,
+  "workspaces": [
+    "mobile/*",
+    "web/*",
+    "backend/*"
+  ],
+  "scripts": {
+    "pet-doc": "yarn workspace @pet-care/pet-doc",
+    "pet-connect": "yarn workspace @pet-care/pet-connect",
+    "mobile-shared": "yarn workspace @pet-care/mobile-shared",
+    "back-office": "yarn workspace @pet-care/back-office",
+    "api-gateway": "yarn workspace @pet-care/api-gateway",
+    "auth-service": "yarn workspace @pet-care/auth-service",
+    "user-service": "yarn workspace @pet-care/user-service",
+    "clean": "rm -rf node_modules && rm -rf mobile/*/node_modules && rm -rf web/*/node_modules && rm -rf backend/*/node_modules",
+    "install-all": "yarn install"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.0",
+    "eslint": "^8.54.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "yarn": ">=1.22.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kias2014/pet-project"
+  },
+  "author": "Pet Care Team",
+  "license": "MIT"
+}
