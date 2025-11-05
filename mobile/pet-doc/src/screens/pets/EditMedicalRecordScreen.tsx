@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -19,7 +19,7 @@ import {typography} from '@theme/typography';
 
 type Props = NativeStackScreenProps<
   ProfileStackParamList,
-  'AddMedicalRecord'
+  'EditMedicalRecord'
 >;
 
 type RecordType = 'vaccination' | 'checkup' | 'prescription' | 'surgery' | 'diagnostic';
@@ -31,13 +31,13 @@ interface RecordTypeOption {
   color: string;
 }
 
-const AddMedicalRecordScreen: React.FC<Props> = ({navigation, route}) => {
-  const {petId} = route.params;
+const EditMedicalRecordScreen: React.FC<Props> = ({navigation, route}) => {
+  const {petId, recordId} = route.params;
 
   const [formData, setFormData] = useState({
     type: '' as RecordType | '',
     title: '',
-    date: new Date().toISOString().split('T')[0],
+    date: '',
     provider: '',
     notes: '',
     nextAppointment: '',
@@ -45,6 +45,7 @@ const AddMedicalRecordScreen: React.FC<Props> = ({navigation, route}) => {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const recordTypes: RecordTypeOption[] = [
     {
@@ -79,6 +80,30 @@ const AddMedicalRecordScreen: React.FC<Props> = ({navigation, route}) => {
     },
   ];
 
+  // Fetch existing record data
+  useEffect(() => {
+    // TODO: Fetch record from API
+    // Mock data for now
+    const mockRecord = {
+      id: recordId,
+      type: 'vaccination' as RecordType,
+      title: 'Rabies Vaccination',
+      date: '2024-10-15',
+      provider: 'Dr. Sarah Johnson',
+      notes: 'Annual rabies vaccination completed. Next due in 12 months.',
+      nextAppointment: '2025-10-15',
+    };
+
+    setFormData({
+      type: mockRecord.type,
+      title: mockRecord.title,
+      date: mockRecord.date,
+      provider: mockRecord.provider,
+      notes: mockRecord.notes,
+      nextAppointment: mockRecord.nextAppointment || '',
+    });
+  }, [recordId]);
+
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
@@ -107,16 +132,46 @@ const AddMedicalRecordScreen: React.FC<Props> = ({navigation, route}) => {
 
     setLoading(true);
 
-    // TODO: Implement API call to save medical record
+    // TODO: Implement API call to update medical record
     setTimeout(() => {
       setLoading(false);
-      Alert.alert('Success', 'Medical record added successfully', [
+      Alert.alert('Success', 'Medical record updated successfully', [
         {
           text: 'OK',
           onPress: () => navigation.goBack(),
         },
       ]);
     }, 1000);
+  };
+
+  const handleDelete = () => {
+    Alert.alert(
+      'Delete Record',
+      'Are you sure you want to delete this medical record? This action cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            setDeleting(true);
+            // TODO: Implement API call to delete medical record
+            setTimeout(() => {
+              setDeleting(false);
+              Alert.alert('Success', 'Medical record deleted successfully', [
+                {
+                  text: 'OK',
+                  onPress: () => navigation.goBack(),
+                },
+              ]);
+            }, 1000);
+          },
+        },
+      ]
+    );
   };
 
   const handleTypeSelect = (type: RecordType) => {
@@ -268,11 +323,23 @@ const AddMedicalRecordScreen: React.FC<Props> = ({navigation, route}) => {
             style={styles.cancelButton}
           />
           <Button
-            title="Save Record"
+            title="Update Record"
             onPress={handleSubmit}
             loading={loading}
             fullWidth
             style={styles.saveButton}
+          />
+        </View>
+
+        <View style={styles.deleteSection}>
+          <Button
+            title="Delete Record"
+            onPress={handleDelete}
+            loading={deleting}
+            variant="outline"
+            fullWidth
+            style={styles.deleteButton}
+            leftIcon="delete"
           />
         </View>
       </ScrollView>
@@ -384,6 +451,15 @@ const styles = StyleSheet.create({
   saveButton: {
     flex: 1,
   },
+  deleteSection: {
+    marginTop: spacing.xl,
+    paddingTop: spacing.xl,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+  },
+  deleteButton: {
+    borderColor: colors.error,
+  },
 });
 
-export default AddMedicalRecordScreen;
+export default EditMedicalRecordScreen;

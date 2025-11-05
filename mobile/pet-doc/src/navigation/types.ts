@@ -78,6 +78,7 @@ export type ProfileStackParamList = {
   PetDetail: {petId: string};
   PetMedicalRecords: {petId: string};
   AddMedicalRecord: {petId: string};
+  EditMedicalRecord: {petId: string; recordId: string};
   MyAppointments: undefined;
   MyOrders: undefined;
   SavedAddresses: undefined;

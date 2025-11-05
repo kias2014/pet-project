@@ -11,6 +11,7 @@ import EditPetScreen from '@screens/pets/EditPetScreen';
 import PetDetailScreen from '@screens/pets/PetDetailScreen';
 import PetMedicalRecordsScreen from '@screens/pets/PetMedicalRecordsScreen';
 import AddMedicalRecordScreen from '@screens/pets/AddMedicalRecordScreen';
+import EditMedicalRecordScreen from '@screens/pets/EditMedicalRecordScreen';
 import MyAppointmentsScreen from '@screens/appointments/MyAppointmentsScreen';
 import MyOrdersScreen from '@screens/marketplace/MyOrdersScreen';
 import SavedAddressesScreen from '@screens/profile/SavedAddressesScreen';
@@ -65,6 +66,11 @@ const ProfileStackNavigator = () => {
         name="AddMedicalRecord"
         component={AddMedicalRecordScreen}
         options={{title: 'Add Medical Record'}}
+      />
+      <Stack.Screen
+        name="EditMedicalRecord"
+        component={EditMedicalRecordScreen}
+        options={{title: 'Edit Medical Record'}}
       />
       <Stack.Screen
         name="MyAppointments"
